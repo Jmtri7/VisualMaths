@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title></title>
+</head>
+<body>
+
+<canvas id="myCanvas" style="border: 1px solid #000000;" width = "600px" height = "600px"></canvas>
+
+<!-- GUI -->
+<form>
+	<input id="input1" type="range" min="0" max="300" value="250" class="slider">
+</form>
+
+<script type="text/javascript">
+
+var c = document.getElementById("myCanvas");
+var ctx = c.getContext("2d");
+ctx.scale(1, -1);
+ctx.translate(c.width / 2, -c.height / 2);
+
+var res = 100;
+
+//gui
+//amplitude slider
+var input1 = document.getElementById("input1");
+	amp = input1.value;
+	input1.oninput = function(){
+		amp = input1.value;
+}
+
+var t = 0;
+setInterval(function(){
+ctx.clearRect(- c.width / 2, - c.height / 2, c.width, c.height);
+
+
+for(th1 = -100 * Math.PI; th1 < 100 * Math.PI; th1 += Math.PI / res) {
+	
+	//draw dot to dot
+
+	polline(f1(th1, t), th1, f1(th1 + Math.PI / res, t), th1 + Math.PI / res);
+
+}
+
+t+= 0.01;
+}, 0.06);
+
+//equation 1
+function f1(th, t) {
+	return amp * Math.sin(5 * th);
+}
+
+function findx(r, th) {
+	return r * Math.cos(th);
+}
+
+function findy(r, th) {
+	return r * Math.sin(th);
+}
+
+function findr(x, y) {
+	var r = Math.sqrt(Math.pow(x, 2) + Math.pow(y, 2))
+	return r;
+}
+
+function rectline(x1, y1, x2, y2) {
+	ctx.beginPath();
+	ctx.moveTo(x1, y1);
+	ctx.lineTo(x2, y2);
+	ctx.stroke();
+}
+
+function polline(r1, th1, r2, th2) {
+	var x1 = findx(r1, th1);
+	var y1 = findy(r1, th1);
+	var x2 = findx(r2, th2);
+	var y2 = findy(r2, th2);
+	rectline(x1, y1, x2, y2);
+}
+
+</script>
+</body>
+</html>
